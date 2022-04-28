@@ -25,7 +25,7 @@ pipeline {
 				script {
 					try {
 						sh '''chmod +x pipeline_by_name.sh
-						./pipeline_by_name.sh "${IDA_URL}" ${PIPELINE_NAME} "${USER_TOKEN}" pipeline
+						./pipeline_by_name.sh "${IDA_URL}" "${PIPELINE_NAME}" "${USER_TOKEN}" pipeline
 						'''
 					} catch (e) {
 						echo "IDA Test Pipeline failed"
