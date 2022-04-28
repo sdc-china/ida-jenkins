@@ -11,7 +11,7 @@ pipeline {
 	
 		stage('Preparation') {
 			steps {
-				checkout changelog: false, poll: false, scm: [$class: 'GitSCM', branches: [[name: 'refs/tags/new-pipeline']], userRemoteConfigs: [[credentialsId: 'gh-ssh-key', url: 'git@github.com:sdc-china/ida-jenkins.git']]]
+				checkout changelog: false, poll: false, scm: [$class: 'GitSCM', branches: [[name: 'new-pipeline']], userRemoteConfigs: [[credentialsId: 'gh-ssh-key', url: 'git@github.com:sdc-china/ida-jenkins.git']]]
 				sh '''
 				rm -rf *.html
 				'''
