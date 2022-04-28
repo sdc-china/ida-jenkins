@@ -5,7 +5,7 @@ pipeline {
     }
 	parameters{
 		string(name: 'IDA_URL', defaultValue: 'https://localhost:8443/ida', description: 'The IDA URL')
-		string(name: 'CHECKSTYLE_PIPELINE_ID', defaultValue: '', description: 'The IDA pipeline ID')
+		string(name: 'PIPELINE_ID', defaultValue: '', description: 'The IDA pipeline ID')
 		string(name: 'USER_TOKEN', defaultValue: '', description: 'The IDA user token')
 	}
 	
@@ -25,7 +25,7 @@ pipeline {
 				script {
 					try {
 						sh '''chmod +x pipeline.sh
-						./pipeline.sh "${IDA_URL}" ${TEST_PIPELINE_ID} "${USER_TOKEN}" test
+						./pipeline.sh "${IDA_URL}" ${PIPELINE_ID} "${USER_TOKEN}" test
 						'''
 					} catch (e) {
 						echo "IDA Test Pipeline failed"
