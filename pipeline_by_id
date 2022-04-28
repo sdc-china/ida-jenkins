@@ -21,16 +21,9 @@ pipeline {
 		stage('Trigger IDA Pipeline') {
 			steps {
 				echo 'Trigger IDA Pipeline...'
-				try {
-					sh '''chmod +x pipeline.sh
-					./pipeline.sh "${IDA_URL}" ${CHECKSTYLE_PIPELINE_ID} "${USER_TOKEN}" checkstyle
-					'''
-				} catch (e) {
-					echo "IDA Checkstyle Pipeline failed"
-					throw e
-				} finally {
-					
-				}
+				sh '''chmod +x pipeline.sh
+				./pipeline.sh "${IDA_URL}" ${CHECKSTYLE_PIPELINE_ID} "${USER_TOKEN}" checkstyle
+				'''
 			}
 		}	
 	}
