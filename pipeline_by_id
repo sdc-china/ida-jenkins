@@ -19,11 +19,16 @@ pipeline {
 		}
 		
 		stage('Trigger IDA Pipeline') {
-			steps {
-				echo 'Trigger IDA Pipeline...'
+			echo 'IDA Test Pipeline...'
+			try {
 				sh '''chmod +x pipeline.sh
-				./pipeline.sh "${IDA_URL}" ${CHECKSTYLE_PIPELINE_ID} "${USER_TOKEN}" checkstyle
+				./pipeline.sh "${IDA_URL}" ${TEST_PIPELINE_ID} "${USER_TOKEN}" test
 				'''
+			} catch (e) {
+				echo "IDA Test Pipeline failed"
+				throw e
+			} finally {
+				publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '.', reportFiles: 'test.html', reportName: 'Test Report', reportTitles: 'Test Report'])    
 			}
 		}	
 	}
