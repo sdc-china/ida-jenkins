@@ -15,7 +15,7 @@ if [ "$INTERVAL" = "" ] ; then
 	export INTERVAL=10
 fi;
 
-BUILD_RESULT=$(curl -u "${USERNAME}:${PASSWORD}" -X POST "${IDA_HOST}/rest/v2/pipelines/builds?pipelineName=${PIPELINE_NAME}" -k -s -d "{}"  -H "accept: application/json;charset=UTF-8" -H "Content-Type: application/json")
+BUILD_RESULT=$(curl -u "${USERNAME}:${PASSWORD}" -X POST "${IDA_HOST}/rest/v2/pipelines/builds" --data-urlencode="pipelineName=${PIPELINE_NAME}" -k -s -d "{}"  -H "accept: application/json;charset=UTF-8" -H "Content-Type: application/json")
 echo $BUILD_RESULT
 BUILD_ID="$(cut -d',' -f3 <<<"$BUILD_RESULT")"
 BUILD_ID="$(cut -d':' -f2 <<<"$BUILD_ID")"
