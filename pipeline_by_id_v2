@@ -7,7 +7,6 @@ pipeline {
 	parameters{
 		string(name: 'IDA_URL', defaultValue: params.IDA_URL ?:'https://localhost:8443/ida', description: 'The IDA URL')
 		string(name: 'PIPELINE_ID', defaultValue: params.PIPELINE_ID ?:'', description: 'The IDA pipeline ID')
-		string(name: 'USER_TOKEN', defaultValue: params.USER_TOKEN ?:'', description: 'The IDA user token')
 	}
 	
 	stages {
@@ -23,16 +22,18 @@ pipeline {
 		
 		stage('Trigger IDA Pipeline') {
 			steps {
-				script {
-					try {
-						sh '''chmod +x pipeline_by_id.sh
-						./pipeline_by_id.sh "${IDA_URL}" "${PIPELINE_ID}" "${USER_TOKEN}" pipeline
-						'''
-					} catch (e) {
-						echo "IDA Pipeline failed"
-						throw e
-					} finally {
-						publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '.', reportFiles: 'pipeline.html', reportName: 'IDA Pipeline Report', reportTitles: 'IDA Pipeline Report'])    
+				withCredentials([usernamePassword(credentialsId: 'ida-user', usernameVariable: 'idaUsername', passwordVariable: 'idaPassword')]) {
+					script {
+						try {
+							sh '''chmod +x pipeline_by_id_v2.sh
+							./pipeline_by_id_v2.sh "${IDA_URL}" "${PIPELINE_ID}" "${idaUsername}" "${idaPassword}" pipeline
+							'''
+						} catch (e) {
+							echo "IDA Pipeline failed"
+							throw e
+						} finally {
+							publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '.', reportFiles: 'pipeline.html', reportName: 'IDA Pipeline Report', reportTitles: 'IDA Pipeline Report'])    
+						}
 					}
 				}
 			}
